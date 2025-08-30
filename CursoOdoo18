@@ -1,0 +1,30 @@
+CURSO ODOO 18
+
+DÍA 1:
+
+1. CREAR ARCHIVO docker-compose.yaml
+2. ESTRUCTURA:
+
+services:
+  odoo:
+    image: odoo:18.0
+    container_name: odoo18
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"  #PORT_CONTAINER:PORT_PC
+    volumes:
+      - ./addons:/mnt/extra-addons	#CARPETA_PC:PATH_ADDONS_CONTAINER
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+  db:
+    image: postgres:15
+    container_name: db_odoo18
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+3. Según nuestro archivo, necesitamos una carpeta llamada addons en nuestro directorio odoo-dev:
+	mkdir addons

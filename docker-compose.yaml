@@ -1,0 +1,57 @@
+services:
+  odoo:
+    image: ${ODOO_IMAGE}
+    container_name: ${ODOO_CONTAINER_NAME}
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - HOST=postgres
+      - USER=${ODOO_USER}
+      - PASSWORD=${ODOO_PASSWORD}
+    ports:
+      - "${ODOO_HOST_PORT}:${ODOO_CONTAINER_PORT}"
+    volumes:
+      - odoo_data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./extra-addons:/mnt/extra-addons
+    networks:
+      - app-network
+      - data-network
+    entrypoint: "/usr/bin/odoo --config /etc/odoo/odoo.conf"
+    command: -d ${POSTGRES_DB} --db_user=${POSTGRES_USER} --db_password=${POSTGRES_PASSWORD} -i base
+    restart: unless-stopped
+  postgres:
+    image: ${POSTGRES_IMAGE}
+    container_name: ${DB_HOST}
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${POSTGRES_HOST_PORT}:${POSTGRES_CONTAINER_PORT}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/pgdata
+    networks:
+      - data-network
+    restart: unless-stopped
+  redis:
+    image: ${REDIS_IMAGE}
+    container_name: ${REDIS_CONTAINER_NAME}
+    ports:
+      - "${REDIS_HOST_PORT}:${REDIS_CONTAINER_PORT}"
+    volumes:
+      - redis_data:/data
+    networks:
+      - data-network
+    restart: unless-stopped
+volumes:
+  postgres_data:
+  redis_data:
+  odoo_data:
+networks:
+  data-network:
+    driver: bridge
+  app-network:
+    driver: bridge
