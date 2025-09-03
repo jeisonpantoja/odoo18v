@@ -33,6 +33,7 @@ services:
       - "${POSTGRES_HOST_PORT}:${POSTGRES_CONTAINER_PORT}"
     volumes:
       - postgres_data:/var/lib/postgresql/data/pgdata
+      - ./backups:/backups
     networks:
       - data-network
     restart: unless-stopped
