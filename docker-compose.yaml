@@ -15,11 +15,12 @@ services:
       - odoo_data:/var/lib/odoo
       - ./config:/etc/odoo
       - ./extra-addons:/mnt/extra-addons
+      - ./logs:/var/log/odoo
     networks:
       - app-network
       - data-network
     entrypoint: "/usr/bin/odoo --config /etc/odoo/odoo.conf"
-    command: -d ${POSTGRES_DB} --db_user=${POSTGRES_USER} --db_password=${POSTGRES_PASSWORD} -i base
+    command: -d ${POSTGRES_DB} --db_user=${POSTGRES_USER} --db_password=${POSTGRES_PASSWORD} -i base --dev=all
     restart: unless-stopped
   postgres:
     image: ${POSTGRES_IMAGE}
