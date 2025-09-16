@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+  <!-- ========================================================= -->
+  <!-- Library Security Groups - Hierarchical Structure         -->
+  <!-- ========================================================= -->
+
+  <!-- Base level: User (read-only access to catalog) -->
+  <record id="group_library_user" model="res.groups">
+    <field name="name">Library / User</field>
+    <field name="category_id" ref="library_base.module_category_resources_management" />
+    <field name="comment">Basic access: view catalog, search books, view availability</field>
+  </record>
+
+  <!-- Staff level: day-to-day operations -->
+  <record id="group_library_staff" model="res.groups">
+    <field name="name">Library / Staff</field>
+    <field name="category_id" ref="library_base.module_category_resources_management" />
+    <field name="implied_ids" eval="[(4, ref('library_base.group_library_user'))]" />
+    <field name="comment">Staff access: handles checkouts, returns, member management</field>
+  </record>
+
+  <!-- Regional Manager: supervises multiple branches -->
+  <record id="group_library_regional_manager" model="res.groups">
+    <field name="name">Library / Regional Manager</field>
+    <field name="category_id" ref="library_base.module_category_resources_management" />
+    <field name="implied_ids" eval="[(4, ref('library_base.group_library_staff'))]" />
+    <field name="comment">Regional Manager access: manages staff, approves policies, regional
+      reporting</field>
+  </record>
+
+  <!-- Manager: full operational control -->
+  <record id="group_library_manager" model="res.groups">
+    <field name="name">Library / Manager</field>
+    <field name="category_id" ref="library_base.module_category_resources_management" />
+    <field name="implied_ids" eval="[(4, ref('library_base.group_library_regional_manager'))]" />
+    <field name="comment">Manager access: full control over library operations, settings, and user
+      management</field>
+  </record>
+
+  <!-- System Admin: technical and system configuration -->
+  <record id="group_library_system_admin" model="res.groups">
+    <field name="name">Library / System Admin</field>
+    <field name="category_id" ref="library_base.module_category_resources_management" />
+    <field name="implied_ids" eval="[(4, ref('library_base.group_library_manager'))]" />
+    <field name="comment">System Admin access: full control over system settings, user management,
+      and technical configurations</field>
+  </record>
+</odoo>

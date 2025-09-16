@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+  <!-- New custom category for our library module -->
+  <record id="module_category_resources_management" model="ir.module.category">
+    <field name="name">Resources Management</field>
+    <field name="sequence">10</field>
+  </record>
+</odoo>

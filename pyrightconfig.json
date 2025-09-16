@@ -1,0 +1,8 @@
+{
+  "stubPath": "/home/asimov/odoo18v/resources/odoo-stubs/",
+  "extraPaths": [
+    "/home/asimov/odoo18v/resources/odoo",
+    "/home/asimov/odoo18v/resources/odoo/addons",
+    "/home/asimov/odoo18v/extra-addons",
+  ]
+}
