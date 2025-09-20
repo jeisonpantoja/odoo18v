@@ -11,13 +11,13 @@ Includes book, author and publisher models and the minimal security setup.
     'website': 'https://www.json-dev.com',
     'category': 'Extra Tools',
     'license': 'LGPL-3',
-    'depends': ['base', 'mail', 'account'],  
+    'depends': ['base', 'mail', 'account'],
     'data': [
-        'security/library_security.xml',        # groups (optional)
-        'security/ir.model.access.csv',         # permissions
-        # 'views/library_menu.xml',               # top-level menu and actions
-        # 'views/library_book_views.xml',         # book form/tree views
-        # 'views/library_author_views.xml',       # author views
+        'data/module_category_data.xml',   # <- primero
+        'security/library_security.xml',   # <- luego grupos
+        'security/ir.model.access.csv',
+        'views/views.xml',
+        'views/templates.xml',
     ],
     'demo': [
         'demo/demo.xml',

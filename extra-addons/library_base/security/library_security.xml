@@ -5,6 +5,17 @@
   <!-- Library Security Groups - Hierarchical Structure         -->
   <!-- ========================================================= -->
 
+  <!-- Library / User
+    ↑
+  Library / Staff
+    ↑
+  Library / Regional Manager
+    ↑
+  Library / Manager
+    ↑
+  Library / System Admin -->
+
+
   <!-- Base level: User (read-only access to catalog) -->
   <record id="group_library_user" model="res.groups">
     <field name="name">Library / User</field>

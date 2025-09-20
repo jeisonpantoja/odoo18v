@@ -4,6 +4,8 @@
 .AppleDouble
 .LSOverride
 resources/
+.idea/
+.vscode/
 
 # Thumbnails
 ._*
