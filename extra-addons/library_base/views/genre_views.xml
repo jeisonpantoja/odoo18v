@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Genre views will be implemented when we create the genre model -->
+    </data>
+</odoo>

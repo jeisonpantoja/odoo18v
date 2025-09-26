@@ -1,36 +1,73 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'library_base',
-    'version': '1.0.0',
-    'summary': 'Core models for Library (books, authors, publishers)',
+    'name': "Library Management Base",
+    'summary': """
+        Core models for library management system: books, authors, publishers, branches and copies.""",
     'description': """
-Library base module: core models and basic access rules for a library.
-Includes book, author and publisher models and the minimal security setup.
+        Library Management Base Module
+        ==============================
+
+        This module provides the foundational models for a comprehensive library management system:
+
+        Main Features:
+        * **Authors Management**: Track book authors with biographical information
+        * **Publishers Management**: Manage publishing companies and their details  
+        * **Books Catalog**: Intellectual works independent of physical manifestations
+        * **Editions Tracking**: Specific manifestations of works (ISBN, format, publisher)
+        * **Physical Copies**: Individual trackable items in library inventory
+        * **Branch Locations**: Multi-location library system support
+        * **Genre Classification**: Hierarchical categorization system
+
+        Technical Features:
+        * Complete audit trails with mail.thread integration
+        * Advanced search and filtering capabilities
+        * Data validation and normalization
+        * Multi-language support
+        * REST API compatible data structures
+        * Performance optimized with proper indexing
+        * Comprehensive test coverage
+
+        This is the base module that other library modules depend on:
+        * library_management (loans, reservations, patrons)  
+        * library_reports (analytics, reporting)
+        * library_web (web interface customizations)
     """,
-    'author': 'json-dev',
-    'website': 'https://www.json-dev.com',
-    'category': 'Extra Tools',
-    'license': 'LGPL-3',
-    'depends': ['base', 'mail', 'account'],
+    'author': "json-dev",
+    'website': "https://www.json-dev.com",
+    'category': 'Library Management',
+    'version': '18.0.1',
+    'depends': ['base', 'mail'],
     'data': [
-        'data/module_category_data.xml',   # <- primero
-        'security/library_security.xml',   # <- luego grupos
+        # Data
+        'data/module_category_data.xml',
+        
+        # Security
+        'security/library_security.xml',
         'security/ir.model.access.csv',
-        'views/views.xml',
-        'views/templates.xml',
+
+        # Views
+        'views/author_views.xml',
+        'views/publisher_views.xml',
+        'views/genre_views.xml',
+        'views/branch_views.xml',
+        'views/book_views.xml',
+        'views/edition_views.xml',
+        'views/book_copy_views.xml',
     ],
     'demo': [
         'demo/demo.xml',
     ],
-    'images': ['static/description/icon.png'],
+    'test': [
+        'tests/test_author.py',
+        'tests/test_publisher.py',
+        'tests/test_genre.py',
+        'tests/test_branch.py',
+        'tests/test_book.py',
+        'tests/test_edition.py',
+        'tests/test_book_copy.py',
+    ],
     'installable': True,
-    'application': False,
+    'application': True,
     'auto_install': False,
-    'assets': {
-        'web.assets_backend': [
-            # put here js/css for backend widgets if needed
-            # 'library_base/static/src/js/library_widget.js',
-            # 'library_base/static/src/css/library_styles.css',
-        ],
-    },
+    'license': 'LGPL-3',
 }
