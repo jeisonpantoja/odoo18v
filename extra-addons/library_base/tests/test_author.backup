@@ -6,16 +6,7 @@ from datetime import date
 
 
 class TestLibraryAuthor(TransactionCase):
-    """
-    Test cases for library.author model following TDD methodology.
-
-    TDD Phase 1: Focus on core functionality without external dependencies
-    - Basic CRUD operations
-    - Field validations
-    - Data normalization
-    - Computed fields (display_name)
-    - API serialization methods
-    """
+    """Test cases for library.author model following TDD methodology."""
 
     def setUp(self):
         """Set up test data."""
@@ -31,7 +22,7 @@ class TestLibraryAuthor(TransactionCase):
             'biography': 'Premio Nobel de Literatura 1982'
         }
 
-    # ============ PRIORIDAD ALTA - Tests Esenciales (TDD Phase 1) ============
+    # ============ PRIORIDAD ALTA - Tests Esenciales ============
 
     def test_create_author_minimal(self):
         """Test creating author with minimal required data."""
@@ -59,6 +50,10 @@ class TestLibraryAuthor(TransactionCase):
             self.Author.create({'name': '   '})
         self.assertIn('Author name is required', str(context.exception))
 
+        # Test con None
+        with self.assertRaises(ValidationError) as context:
+            self.Author.create({'name': None})
+
     def test_birth_date_not_in_future(self):
         """Test that future birth dates are rejected."""
         future_date = date(2030, 1, 1)
@@ -84,7 +79,7 @@ class TestLibraryAuthor(TransactionCase):
         self.assertIn('Death date must be after birth date',
                       str(context.exception))
 
-    # ============ PRIORIDAD MEDIA - Funcionalidad de Negocio (TDD Phase 1) ============
+    # ============ PRIORIDAD MEDIA - Funcionalidad de Negocio ============
 
     def test_name_normalization_on_create(self):
         """Test that names are properly normalized (spaces trimmed/collapsed)."""
@@ -136,32 +131,7 @@ class TestLibraryAuthor(TransactionCase):
         self.assertEqual(result['name'], 'Gabriel García Márquez')
         self.assertEqual(result['country'], 'Colombia')
 
-    def test_search_authors_method(self):
-        """Test the search_authors helper method."""
-        # Crear algunos autores de prueba
-        authors_data = [
-            {'name': 'Colombian Author', 'country': 'Colombia'},
-            {'name': 'Mexican Author', 'country': 'Mexico'},
-            {'name': 'Another Colombian', 'country': 'Colombia'}
-        ]
-
-        for data in authors_data:
-            self.Author.create(data)
-
-        # Test búsqueda sin filtros
-        all_authors = self.Author.search_authors()
-        self.assertGreaterEqual(len(all_authors), 3)
-
-        # Test búsqueda con dominio
-        colombian_authors = self.Author.search_authors(
-            [('country', '=', 'Colombia')])
-        self.assertEqual(len(colombian_authors), 2)
-
-        # Test búsqueda con límite
-        limited_results = self.Author.search_authors(limit=1)
-        self.assertEqual(len(limited_results), 1)
-
-    # ============ PRIORIDAD MEDIA - Relaciones (TDD Phase 1) ============
+    # ============ PRIORIDAD MEDIA - Relaciones ============
 
     def test_partner_id_optional(self):
         """Test that partner_id can be None or valid res.partner."""
@@ -169,21 +139,24 @@ class TestLibraryAuthor(TransactionCase):
         author = self.Author.create({'name': 'Author Without Partner'})
         self.assertFalse(author.partner_id)
 
-        # Con partner válido - usar uno existente en vez de crear
-        existing_partner = self.env['res.partner'].search([], limit=1)
+        # Con partner válido
+        partner = self.env['res.partner'].create({'name': 'Author Contact'})
+        author_with_partner = self.Author.create({
+            'name': 'Author With Partner',
+            'partner_id': partner.id
+        })
+        self.assertEqual(author_with_partner.partner_id, partner)
 
-        # Si existe al menos un partner, probar la relación
-        if existing_partner:
-            author_with_partner = self.Author.create({
-                'name': 'Author With Partner',
-                'partner_id': existing_partner.id
-            })
-            self.assertEqual(author_with_partner.partner_id, existing_partner)
-        else:
-            # Si no hay partners, al menos verificamos que el campo acepta valores
-            self.assertTrue(hasattr(self.Author, 'partner_id'))
+    # ============ TESTS DE INTEGRACIÓN (se implementarán después) ============
 
-    # ============ TESTS DE VALIDACIÓN AVANZADA (TDD Phase 1) ============
+    def test_get_books_method_placeholder(self):
+        """Placeholder for testing get_books method - will implement when book model exists."""
+        author = self.Author.create({'name': 'Test Author'})
+        books = author.get_books()
+        # Por ahora debe retornar recordset vacío
+        self.assertEqual(len(books), 0)
+
+    # ============ TESTS DE VALIDACIÓN AVANZADA ============
 
     def test_multiple_authors_same_name_allowed(self):
         """Test that multiple authors can have the same name (no uniqueness constraint)."""
@@ -224,65 +197,14 @@ class TestLibraryAuthor(TransactionCase):
         with self.assertRaises(ValidationError):
             author.write({'birth_date': date(2030, 1, 1)})
 
-    # ============ TESTS PARA IMPLEMENTAR EN PHASE 2 ============
-    # (Comentados hasta que implementemos las dependencias)
+    def test_mail_thread_integration(self):
+        """Test that mail.thread integration works."""
+        author = self.Author.create({'name': 'Test Author'})
 
-    # def test_get_books_method(self):
-    #     """Test get_books method - Phase 2 when library.book exists."""
-    #     pass
+        # Verificar que tiene capacidades de mensajería
+        self.assertTrue(hasattr(author, 'message_post'))
+        self.assertTrue(hasattr(author, 'message_ids'))
 
-    # def test_books_count_computation(self):
-    #     """Test books_count computed field - Phase 2 when book_ids exists."""
-    #     pass
-
-    # def test_mail_thread_integration(self):
-    #     """Test mail.thread integration - Phase 2 when mail inheritance added."""
-    #     pass
-
-    # ============ EDGE CASES Y ROBUSTEZ (TDD Phase 1) ============
-
-    def test_empty_country_allowed(self):
-        """Test that country field can be empty."""
-        author = self.Author.create({'name': 'Stateless Author'})
-        self.assertFalse(author.country)
-
-    def test_long_biography_supported(self):
-        """Test that long biographies are supported."""
-        long_bio = "A" * 5000  # Biografía muy larga
-        author = self.Author.create({
-            'name': 'Prolific Author',
-            'biography': long_bio
-        })
-        self.assertEqual(len(author.biography), 5000)
-
-    def test_special_characters_in_name(self):
-        """Test that special characters in names are preserved."""
-        special_names = [
-            'José María Aznar',
-            'François Mitterrand',
-            'Øystein Lønn',
-            'محمد حسين الطباطبائي'
-        ]
-
-        for name in special_names:
-            author = self.Author.create({'name': name})
-            self.assertEqual(author.name, name)
-
-    def test_date_edge_cases(self):
-        """Test edge cases with dates."""
-        # Autor muy viejo
-        old_author = self.Author.create({
-            'name': 'Ancient Author',
-            'birth_date': date(1400, 1, 1),
-            'death_date': date(1450, 1, 1)
-        })
-        self.assertTrue(old_author.id)
-
-        # Fechas iguales (nació y murió el mismo día)
-        same_day = date(1950, 1, 1)
-        unlucky_author = self.Author.create({
-            'name': 'Unlucky Author',
-            'birth_date': same_day,
-            'death_date': same_day
-        })
-        self.assertTrue(unlucky_author.id)
+        # Test posting a message
+        author.message_post(body='Test message', subject='Test Subject')
+        self.assertTrue(len(author.message_ids) > 0)

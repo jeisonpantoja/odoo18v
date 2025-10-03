@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Library Management Base",
+    'name': "Library Base",
     'summary': """
         Core models for library management system: books, authors, publishers, branches and copies.""",
     'description': """
@@ -34,16 +34,16 @@
     """,
     'author': "json-dev",
     'website': "https://www.json-dev.com",
-    'category': 'Library Management',
-    'version': '18.0.1',
+    'category': 'Resources Management',
+    'version': '18.0.1.0.0',
     'depends': ['base', 'mail'],
     'data': [
         # Data
-        'data/module_category_data.xml',
+        'data/module_category_data.xml',    # 1
         
         # Security
-        'security/library_security.xml',
-        'security/ir.model.access.csv',
+        'security/library_security.xml',    # 2
+        'security/ir.model.access.csv',     # 3
 
         # Views
         'views/author_views.xml',
