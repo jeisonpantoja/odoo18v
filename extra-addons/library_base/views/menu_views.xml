@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Window Action for author -->
+    <record id="action_library_author" model="ir.actions.act_window">
+        <field name="name">Authors</field>
+        <field name="res_model">library.author</field>
+        <field name="view_mode">list,form</field>
+        <!-- <field name="search_view_id" ref="view_library_author_search" /> -->
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first author</p>
+            <p>Track authors and their biographical information for your library.</p>
+        </field>
+    </record>
+
+    <!-- Window Action for publisher -->
+    <record id="action_library_publisher" model="ir.actions.act_window">
+        <field name="name">Publishers</field>
+        <field name="res_model">library.publisher</field>
+        <field name="view_mode">list,form</field>
+        <!-- <field name="search_view_id" ref="library_publisher_view_search" /> -->
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first publisher</p>
+            <p>Track publishers and their information for your library.</p>
+        </field>
+    </record>
+
+    <!-- Minimal parent menu (create if not exist) -->
+    <menuitem id="menu_library_root" name="Library" sequence="10" />
+    <!-- Menu item for author (child of library root) -->
+    <menuitem
+        id="menu_library_author"
+        name="Authors"
+        parent="menu_library_root"
+        action="action_library_author"
+        sequence="20" />
+    <menuitem
+        id="menu_library_publisher"
+        name="Publishers"
+        parent="menu_library_root"
+        action="action_library_publisher"
+        sequence="30" />
+</odoo>

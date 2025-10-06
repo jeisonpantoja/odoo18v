@@ -4,3 +4,9 @@ access_library_author_staff,access.library.author.staff,model_library_author,lib
 access_library_author_regional_manager,access.library.author.regional_manager,model_library_author,library_base.group_library_regional_manager,1,1,1,0
 access_library_author_manager,access.library.author.manager,model_library_author,library_base.group_library_manager,1,1,1,1
 access_library_author_system_admin,access.library.author.system_admin,model_library_author,library_base.group_library_system_admin,1,1,1,1
+
+access_library_publisher_user,access.library.publisher.user,model_library_publisher,library_base.group_library_user,1,1,1,0
+access_library_publisher_staff,access.library.publisher.staff,model_library_publisher,library_base.group_library_staff,1,1,1,0
+access_library_publisher_regional_manager,access.library.publisher.regional_manager,model_library_publisher,library_base.group_library_regional_manager,1,1,1,0
+access_library_publisher_manager,access.library.publisher.manager,model_library_publisher,library_base.group_library_manager,1,1,1,1
+access_library_publisher_system_admin,access.library.publisher.system_admin,model_library_publisher,library_base.group_library_system_admin,1,1,1,1

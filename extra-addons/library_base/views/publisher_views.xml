@@ -1,6 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-        <!-- Genre views will be implemented when we create the genre model -->
-    </data>
+    <!-- Tree view for publisher -->
+    <record id="library_publisher_view_tree" model="ir.ui.view">
+        <field name="name">library.publisher.tree</field>
+        <field name="model">library.publisher</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="founded_year" />
+                <field name="country" />
+                <field name="website" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Form view for publisher -->
+    <record id="library_publisher_view_form" model="ir.ui.view">
+        <field name="name">library.publisher.form</field>
+        <field name="model">library.publisher</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Publisher Name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="website" />
+                            <field name="founded_year" />
+                        </group>
+                        <group>
+                            <field name="country" />
+                            <field name="contact_id" />
+                            <field name="active" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="Brief description" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search view (Filters) for publisher -->
+    <record id="library_publisher_view_search" model="ir.ui.view">
+        <field name="name">library.publisher.search</field>
+        <field name="model">library.publisher</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="country" />
+                <separator />
+                <filter string="Archived" name="inactive" domain="[('active','=',False)]" />
+                <group expand="0" string="Group By">
+                    <filter string="Country" name="group_by_country"
+                        context="{'group_by':'country'}" />
+                    <filter string="Founded Year" name="group_by_founded_year"
+                        context="{'group_by':'founded_year'}" />
+                </group>
+            </search>
+        </field>
+    </record>
 </odoo>
