@@ -6,10 +6,10 @@
         <field name="model">library.publisher</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name" />
-                <field name="founded_year" />
-                <field name="country" />
-                <field name="website" />
+                <field name="name" width="40%" />
+                <field name="founded_year" width="20%" />
+                <field name="country" width="20%" />
+                <field name="website" width="20%" />
             </list>
         </field>
     </record>
@@ -28,7 +28,6 @@
                     </div>
                     <group>
                         <group>
-                            <field name="name" />
                             <field name="website" />
                             <field name="founded_year" />
                         </group>

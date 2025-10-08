@@ -46,9 +46,9 @@
         'security/ir.model.access.csv',     # 3
 
         # Views
-        'views/menu_views.xml',
         'views/author_views.xml',
         'views/publisher_views.xml',
+        'views/menu_views.xml',
         'views/genre_views.xml',
         'views/branch_views.xml',
         'views/book_views.xml',

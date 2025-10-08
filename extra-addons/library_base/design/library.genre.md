@@ -51,6 +51,42 @@ Represents hierarchical categorization system for books (genres, subjects, theme
 
   - Help: "Direct child genres"
 
+## Diagram
+
+library_genre (self-referential)
+│
+├─ id (PK)
+├─ name
+├─ parent_id (FK → library_genre.id) ◄── Relación recursiva
+└─ child_ids (computed, inverse of parent_id)
+
+Cardinalidad: 
+- Cada género puede tener 0 ó 1 padre (Many2one)
+- Cada género puede tener 0 a N hijos (One2many)
+
+┌─────────────────────────────────────┐
+│         library.genre               │
+├─────────────────────────────────────┤
+│ PK  id            INTEGER           │
+│     name          VARCHAR(255)      │
+│     code          VARCHAR(20)       │
+│     description   TEXT              │
+│     color         INTEGER           │
+│ FK  parent_id     INTEGER           │◄────┐
+│     parent_path   VARCHAR(255)      │     │
+│     sequence      INTEGER           │     │
+│     active        BOOLEAN           │     │
+└─────────────────────────────────────┘     │
+                │                           |
+                │                           │
+                │    "is parent of"         │
+                │    (1:N - recursive)      │
+                └───────────────────────────┘
+                     ↑
+                     │
+                Relación reflexiva
+                (self-referential)
+
 ### System Fields
 
 - **active**: Boolean(default=True)
