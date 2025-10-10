@@ -1,6 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-        <!-- Genre views will be implemented when we create the genre model -->
-    </data>
+    <!-- List view with hierarchy -->
+    <record id='library_genre_view_tree' model='ir.ui.view'>
+        <field name='name'>library_genre_tree</field>
+        <field name='model'>library.genre</field>
+        <field name='arch' type='xml'>
+            <list string="Genres" default_order="parent_path">
+                <field name="sequence" widget="handle" />
+                <field name="display_name" />  <!-- Muestra la jerarquía completa -->
+                <field name="code" />
+                <field name="parent_id" optional="show" />  <!-- Referencia visual al padre -->
+            </list>
+        </field>
+    </record>
+
+    <!-- Form view for genre-->
+    <record id='library_genre_view_form' model='ir.ui.view'>
+        <field name='name'>library_genre_form</field>
+        <field name='model'>library.genre</field>
+        <field name='arch' type='xml'>
+            <form string='Genres'>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Genre Name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code" />
+                            <field name="sequence" />
+                            <field name="active" />
+                        </group>
+                        <group>
+                            <field name="parent_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Subgenres">
+                            <field name="child_ids">
+                                <list editable="bottom">
+                                    <field name="name" />
+                                    <field name="code" />
+                                    <field name="sequence" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Description">
+                            <field name="description" placeholder="Brief description" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search view (Filters) for genre -->
+    <record id='library_genre_view_search' model='ir.ui.view'>
+        <field name='name'>library_genre_search</field>
+        <field name='model'>library.genre</field>
+        <field name='arch' type='xml'>
+            <search string="Genres">
+                <field name="display_name" />
+                <field name="code" />
+                <field name="parent_id" />
+                <separator />
+                <filter name="root_genres" string="Root genres" domain="[('parent_id', '=', False)]" />
+                <filter name="subgenres" string="Subgenres" domain="[('parent_id', '!=', False)]" />
+                <filter name="inactive" string="Archived" domain="[('active','=',False)]" />
+                <group expand="0" string="Group By">
+                    <filter name="group_by_parent" string="By Parent"
+                        context="{'group_by': 'parent_id'}" />
+                </group>
+            </search>
+        </field>
+    </record>
 </odoo>

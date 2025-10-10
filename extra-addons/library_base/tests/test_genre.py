@@ -152,7 +152,8 @@ class TestLibraryGenre(TransactionCase):
         self.Genre.create({'name': 'Fiction', 'code': 'FIC'})
 
         with self.assertRaises(IntegrityError):
-            self.Genre.create({'name': 'Sci-Fi', 'code': 'FIC'})
+            with self.cr.savepoint():  # ← rollback
+                self.Genre.create({'name': 'Sci-Fi', 'code': 'FIC'})
 
     def test_display_name_with_hierarchy(self):
         """Test display_name shows hierarchy context."""

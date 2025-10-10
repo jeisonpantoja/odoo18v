@@ -13,9 +13,10 @@ class LibraryGenre(models.Model):
 
     _name = 'library.genre'
     _description = 'Library Genre'
-    _order = 'sequence, name'
     _parent_name = 'parent_id'  # Indicate which is the parent field for hierarchies
     _parent_store = True        # Enable the parent_path automatic system
+    _parent_order = 'name'
+    _order = 'parent_path, sequence, name'
 
     # ============ CORE FIELDS ============
 
@@ -88,12 +89,22 @@ class LibraryGenre(models.Model):
         help="Formatted name for UI display"
     )
 
+    @api.depends('name', 'parent_id.display_name')
+    def _compute_display_name(self):
+        """Compute display name based on name and parent when available."""
+        for record in self:
+            if record.parent_id:
+                # Si el padre tiene ya display_name, lo usamos + "/" + propio nombre
+                record.display_name = f"{record.parent_id.display_name} / {record.name}"
+            else:
+                record.display_name = record.name
+
     # ============ CONSTRAINTS ============
 
     _sql_constraints = [
         ('code_unique', 'UNIQUE(code)', 'Genre code must be unique!')
     ]
-    
+
     @api.constrains('name')
     def _check_name_not_empty(self):
         """Validate that the genre name is not empty."""

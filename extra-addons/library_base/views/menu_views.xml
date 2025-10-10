@@ -24,8 +24,21 @@
         </field>
     </record>
 
+    <!-- Window Action for genre -->
+    <record id="action_library_genre" model="ir.actions.act_window">
+        <field name="name">Genres</field>
+        <field name="res_model">library.genre</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="library_genre_view_search" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first genre</p>
+            <p>Track genres and their information for your library.</p>
+        </field>
+    </record>
+
     <!-- Minimal parent menu (create if not exist) -->
     <menuitem id="menu_library_root" name="Library" sequence="10" />
+
     <!-- Menu item for author (child of library root) -->
     <menuitem
         id="menu_library_author"
@@ -33,6 +46,7 @@
         parent="menu_library_root"
         action="action_library_author"
         sequence="20" />
+
     <!-- Menu item for publisher (child of library root) -->
     <menuitem
         id="menu_library_publisher"
@@ -40,4 +54,12 @@
         parent="menu_library_root"
         action="action_library_publisher"
         sequence="30" />
+
+    <!-- Menu item for genre (child of library root) -->
+    <menuitem
+        id="menu_library_genre"
+        name="Genres"
+        parent="menu_library_root"
+        action="action_library_genre"
+        sequence="40" />
 </odoo>

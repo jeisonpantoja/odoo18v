@@ -36,11 +36,11 @@
     'website': "https://www.json-dev.com",
     'category': 'Resources Management',
     'version': '18.0.1.0.0',
-    'depends': ['base', 'mail'],
+    'depends': ['base', 'mail', 'web'],
     'data': [
         # Data
         'data/module_category_data.xml',    # 1
-        
+
         # Security
         'security/library_security.xml',    # 2
         'security/ir.model.access.csv',     # 3
@@ -48,12 +48,12 @@
         # Views
         'views/author_views.xml',
         'views/publisher_views.xml',
-        'views/menu_views.xml',
         'views/genre_views.xml',
         'views/branch_views.xml',
         'views/book_views.xml',
         'views/edition_views.xml',
         'views/book_copy_views.xml',
+        'views/menu_views.xml',
     ],
     'demo': [
         'demo/demo.xml',
